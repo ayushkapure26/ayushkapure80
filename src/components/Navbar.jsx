@@ -7,7 +7,7 @@ export default function Navbar({
   setCurrentTab, 
   selectedCity, 
   setSelectedCity, 
-  activeBookingsCount 
+  activeBookingsCount, cities = CITIES 
 }) {
   return (
     <header className="navbar">
@@ -18,7 +18,7 @@ export default function Navbar({
             <Zap size={24} />
           </div>
           <div>
-            GreenFlow <span className="gradient-text">CNG</span>
+            CNG <span className="gradient-text">मित्र</span>
           </div>
         </a>
 
@@ -31,7 +31,7 @@ export default function Navbar({
             className="city-select"
             aria-label="Select City"
           >
-            {CITIES.map(city => (
+            {cities.map(city => (
               <option key={city} value={city}>{city}</option>
             ))}
           </select>
@@ -90,7 +90,7 @@ export default function Navbar({
                 onClick={() => setCurrentTab('operator')}
                 style={{ gap: '0.4rem', border: '1px solid rgba(0, 245, 160, 0.4)' }}
               >
-                <ShieldCheck size={16} /> Operator Admin
+                <ShieldCheck size={16} /> My Station
               </button>
             </li>
           </ul>

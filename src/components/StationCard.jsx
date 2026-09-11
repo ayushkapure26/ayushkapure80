@@ -15,7 +15,7 @@ export default function StationCard({ station, onBook, isFavorite, onToggleFavor
         <div>
           <span className={`badge ${station.status === 'Open' ? 'badge-success' : 'badge-warning'}`}>
             <span className="pulse-dot" style={{ backgroundColor: station.status === 'Open' ? '#10B981' : '#F59E0B' }}></span>
-            {station.status} ({station.operatingHours})
+            {station.status} · {station.operatingHours}
           </span>
           <h3 style={{ fontSize: '1.15rem', fontWeight: '700', marginTop: '0.5rem', color: '#fff' }}>
             {station.name}
@@ -119,13 +119,15 @@ export default function StationCard({ station, onBook, isFavorite, onToggleFavor
         <span style={{ fontWeight: '700' }}>~{station.avgWaitMins} Minutes</span>
       </div>
 
+      <p className="muted">Updated {new Date(station.updatedAt).toLocaleString()} · <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(station.address+", "+station.city)}`} target="_blank" rel="noreferrer">Directions</a></p>
       {/* Book Button */}
       <button 
         className="btn btn-primary" 
+        disabled={station.status !== "Open"}
         onClick={() => onBook(station)}
         style={{ width: '100%', marginTop: 'auto' }}
       >
-        Book Express Slot <ChevronRight size={18} />
+        {station.status === "Open" ? "Book refill" : "Station closed"} <ChevronRight size={18} />
       </button>
     </div>
   );

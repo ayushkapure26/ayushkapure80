@@ -1,0 +1,8 @@
+import { sqliteTable, text, integer, real, index, uniqueIndex } from 'drizzle-orm/sqlite-core';
+export const stations = sqliteTable('stations', {
+ id: text('id').primaryKey(), ownerId: text('owner_id').notNull(), name: text('name').notNull(), city: text('city').notNull(), address: text('address').notNull(), status: text('status').notNull().default('Open'), price: real('price').notNull(), pressure: integer('pressure').notNull(), nozzles: integer('nozzles').notNull(), hours: text('hours').notNull(), vehicles: text('vehicles').notNull(), updatedAt: text('updated_at').notNull()
+}, t => [index('stations_owner').on(t.ownerId)]);
+export const bookings = sqliteTable('bookings', {
+ sequence: integer('sequence').primaryKey({autoIncrement:true}), id: text('id').notNull(), userId: text('user_id').notNull(), stationId: text('station_id').notNull().references(()=>stations.id), requestKey: text('request_key').notNull(), driverName:text('driver_name').notNull(), phone:text('phone').notNull(), vehicleType:text('vehicle_type').notNull(), vehicleNo:text('vehicle_no').notNull(), quantity:text('quantity').notNull(), scheduledAt:text('scheduled_at').notNull(), status:text('status').notNull().default('Active'), createdAt:text('created_at').notNull()
+},t=>[uniqueIndex('bookings_id').on(t.id),uniqueIndex('bookings_request').on(t.userId,t.requestKey),index('bookings_user').on(t.userId,t.sequence),index('bookings_station_queue').on(t.stationId,t.status,t.scheduledAt)]);
+export const favorites=sqliteTable('favorites',{userId:text('user_id').notNull(),stationId:text('station_id').notNull().references(()=>stations.id)},t=>[uniqueIndex('favorites_user_station').on(t.userId,t.stationId)]);
